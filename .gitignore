@@ -27,3 +27,6 @@ __pycache__/
 # Saved models.
 /examples/results/
 /meltingpot/assets/
+
+# CUDNN Local repo
+*.deb
