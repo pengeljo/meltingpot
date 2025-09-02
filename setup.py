@@ -141,7 +141,7 @@ setuptools.setup(
         'absl-py',
         'chex',
         'dm-env',
-        'dmlab2d',
+        'dmlab2d>=1.0.0',
         'dm-tree',
         'immutabledict',
         'ml-collections',

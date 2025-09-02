@@ -1,0 +1,161 @@
+# Novel Agency Experiments - Cursor Rules
+
+## Project Overview
+This project implements experimental tests of novel forms of inter- and intra-agency using DeepMind's Melting Pot framework. We are exploring machine agents' capabilities to transcend human limitations in collective action, identity boundaries, and internal decision-making architectures.
+
+## Core Research Areas
+1. **Collective Agency** - Testing flexible collective formation and dissolution
+2. **Identity Fusion/Fission** - Dynamic merging and splitting of agent identities
+3. **Intra-Agency Modules** - Competing internal systems within single agents
+4. **Cross-Temporal Agency** - Persistent collective identities across episodes
+
+## Development Standards
+
+### Code Quality & Style
+- Follow PEP 8 conventions with 4-space indentation
+- Use type hints consistently: `from typing import Dict, List, Any, Set, Optional, Tuple`
+- Prefer descriptive variable names that reflect agency concepts
+- Add docstrings to all classes and methods explaining their role in agency experiments
+- Keep functions focused on single agency concepts (fusion, arbitration, etc.)
+
+### Experimental Framework Patterns
+```python
+# Standard experiment structure
+class [Concept]Experiment:
+    def __init__(self, scenario_name: str):
+        self.scenario_name = scenario_name
+        self.env = scenario.build(scenario_name)
+        self.agents = self._initialize_[concept]_agents()
+        self.results = {...}  # Track experimental data
+
+    def run_episode(self, max_steps: int):
+        # Core experimental loop
+
+    def analyze_results(self):
+        # Rigorous analysis with academic insights
+
+    def main():
+        # Clear experimental narrative
+```
+
+### Agent Architecture Guidelines
+- **Modular Design**: Separate agency concepts into distinct modules (CollectiveAgent, FusionAgent, etc.)
+- **Memory Systems**: Include persistent memory for cross-temporal experiments
+- **Decision Architecture**: Implement clear decision-making pipelines that expose agency mechanisms
+- **Identity Tracking**: Maintain clear identity boundaries and transitions
+
+### Melting Pot Integration
+- Always use `scenario.build(scenario_name)` for environment initialization
+- Convert action dictionaries to lists when stepping environment: `action_list = [actions[i] for i in range(num_agents)]`
+- Handle timestep termination: `if timestep.last(): break`
+- Access observations correctly: `timestep.observation`
+- Validate action ranges (typically 0-6) before environment steps
+
+### Experimental Rigor
+- **Hypothesis-Driven**: Each experiment should test specific agency hypotheses
+- **Quantitative Metrics**: Track measurable outcomes (fusion rates, conflict frequencies, coordination success)
+- **Baseline Comparisons**: Compare novel agency forms against individual agency
+- **Statistical Validity**: Run multiple episodes and report variance
+- **Philosophical Grounding**: Connect results to theoretical agency concepts
+
+### Data Collection & Analysis
+```python
+# Standard results structure
+self.results = {
+    'episode_results': [],      # Per-episode outcomes
+    'agency_transitions': [],   # Identity changes, fusions, splits
+    'decision_conflicts': [],   # Internal arbitration events
+    'coordination_patterns': [], # Collective behavior analysis
+    'temporal_persistence': []  # Cross-episode continuity
+}
+```
+
+### Error Handling
+- Gracefully handle Melting Pot environment errors
+- Validate agent counts match scenario requirements
+- Implement fallback decision mechanisms for edge cases
+- Log experimental failures with context for debugging
+
+### Performance Considerations
+- Limit experiment duration (50-100 steps typically sufficient)
+- Avoid expensive computations in tight loops
+- Cache frequently accessed agent/collective data
+- Use efficient data structures for large-scale fusion experiments
+
+## Agency-Specific Guidelines
+
+### Collective Agency Experiments
+- Test identity boundary flexibility vs rigid individual boundaries
+- Measure collective coordination vs individual optimization
+- Track collective formation/dissolution patterns
+- Implement novel coordination mechanisms impossible for humans
+
+### Identity Fusion/Fission Experiments
+- Ensure clean identity state transitions
+- Track component agents through fusion/fission cycles
+- Test dynamic membership changes
+- Measure fusion stability vs individual autonomy preferences
+
+### Intra-Agency Module Experiments
+- Implement competing internal modules (deliberative, motivational, executive, safety)
+- Create clear arbitration mechanisms between modules
+- Track internal conflict frequency and resolution patterns
+- Test novel coordination architectures beyond human psychological limitations
+
+### Cross-Temporal Agency Experiments
+- Maintain persistent memory across episodes
+- Test collective learning and adaptation over time
+- Track membership evolution and identity persistence
+- Implement novel forms of "collective personhood"
+
+## Philosophical Integration
+- Connect computational results to agency theory (Korsgaard, Watson, DiGiovanna)
+- Distinguish between interesting technical results and genuine agency insights
+- Be critical about gaps between computational models and philosophical claims
+- Acknowledge limitations alongside strengths
+
+## Output & Documentation
+- Print clear experimental narratives during execution
+- Generate academic-quality analysis with statistical insights
+- Include "EXPERIMENT CONCLUSIONS" sections linking to agency theory
+- Document novel capabilities that transcend human limitations
+- Maintain rigorous academic tone while being accessible
+
+## Common Patterns to Implement
+```python
+# Agent decision-making
+def make_decision(self, observations, context, step) -> Tuple[int, Dict]:
+    # Return action and detailed decision metadata
+
+# Collective formation
+def evaluate_collective_formation(self, available_agents, context) -> Set[int]:
+    # Return agents to invite into collective
+
+# Identity management
+def update_identity(self, new_components: Set[int], context: Dict):
+    # Handle identity transitions with full state management
+
+# Cross-temporal persistence
+def persist_across_episodes(self, episode_data: Dict):
+    # Maintain identity and memory across time boundaries
+```
+
+## Testing & Validation
+- Test each experiment in isolation before integration
+- Validate against multiple Melting Pot scenarios
+- Ensure reproducible results with controlled randomness
+- Document unexpected behaviors that reveal novel agency properties
+
+## Research Documentation
+- Maintain clear README explaining experimental contributions
+- Document which agency concepts each experiment tests
+- Include performance metrics and statistical analysis
+- Reference relevant philosophical literature
+
+## Collaboration Guidelines
+- Comment complex agency logic for academic review
+- Use descriptive commit messages referencing agency concepts tested
+- Separate experimental code from analysis/visualization
+- Maintain backwards compatibility for comparative studies
+
+Remember: This is cutting-edge research into novel forms of agency. Code should reflect both technical excellence and deep engagement with philosophical questions about the nature of agency, identity, and collective action.
