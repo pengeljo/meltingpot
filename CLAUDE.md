@@ -64,7 +64,8 @@ This repository extends Melting Pot to explore **novel agent forms and moral con
 - `meltingpot/utils/`: Core utilities including policies, evaluation, and substrate builders
 - `meltingpot/human_players/`: Interactive scripts for manual gameplay
 - `examples/`: Training examples (RLlib) and tutorials
-- `agency_experiments/`: Research experiments directory
+- `agency_experiments/`: **Systematic agency experiments framework** (see detailed section below)
+- `agency_experiments_old/`: Legacy research experiments directory
 - `neural_training/`: Neural network training scripts
 
 ### Framework Structure
@@ -129,3 +130,244 @@ A substrate requires:
 - Interactive testing: `python meltingpot/human_players/play_<substrate>.py`
 - Debug mode: Add `--verbose True` flag to see component interactions
 - Run substrate tests: `pytest meltingpot/configs/substrates/<substrate>_test.py`
+
+## Agency Experiments Framework
+
+The `agency_experiments/` directory contains a systematic framework for conducting research on novel forms of agency beyond human limitations. This framework enables experiments with collective agents, temporal agents, and other non-standard agency forms.
+
+### Framework Overview
+
+**Research Focus**: Explore how agents with different self-understanding structures might develop novel social concepts and moral practices that transcend human cognitive, physical, and social constraints.
+
+**Core Philosophy**: Use neural networks for discovery rather than testing pre-conceived ideas. Let agents learn what strategies work through evolution and environmental interaction.
+
+### Directory Structure
+
+```
+agency_experiments/
+├── README.md                    # Framework overview and research methodology
+├── USAGE_GUIDE.md              # Detailed usage instructions with examples
+├── MIGRATION_GUIDE.md          # Guide for converting old experiments
+├── shared/                     # Reusable components across experiments
+│   ├── agents/                 # Base agent classes and implementations
+│   │   ├── base.py            # BaseAgent, AgentCapabilities, AgentType
+│   │   ├── individual.py      # IndividualAgent implementation
+│   │   ├── collective.py      # CollectiveAgent with coordination costs
+│   │   └── __init__.py
+│   ├── evolution/             # Evolutionary training systems
+│   │   ├── base.py           # EvolutionaryTrainer, EvolutionConfig
+│   │   ├── selection.py      # Tournament, FitnessProportional selection
+│   │   ├── mutation.py       # Gaussian, Uniform mutation methods
+│   │   └── __init__.py
+│   ├── neural/               # Neural network components
+│   │   ├── base.py          # BaseNeuralNetwork, MultiOutputNetwork
+│   │   └── __init__.py
+│   ├── analysis/             # Analysis and visualization tools
+│   │   ├── base.py          # ExperimentAnalyzer base class
+│   │   ├── plotting.py      # Plotting utilities
+│   │   └── __init__.py
+│   └── utils/               # Utility functions
+│       ├── logging_utils.py # Logging setup
+│       ├── config_utils.py  # Configuration management
+│       └── __init__.py
+├── experiments/             # Individual experiments
+│   └── collective_agency/   # Example: Collective vs Individual agents
+│       ├── README.md        # Experiment-specific documentation
+│       ├── config.py        # Experiment configuration
+│       ├── agents.py        # Agent implementations
+│       ├── environment.py   # MeltingPot environment wrapper
+│       ├── training.py      # Evolutionary training system
+│       ├── analysis.py      # Analysis and visualization
+│       ├── run_experiment.py # Main experiment runner
+│       ├── results/         # Experimental data and analysis
+│       └── tests/          # Unit tests
+└── templates/              # Templates for new experiments
+    └── experiment_template/ # Standard experiment structure
+```
+
+### Key Concepts
+
+#### Agent Types
+
+1. **Individual Agents**: Standard single-body agents with conventional decision-making
+   - One decision-maker per agent
+   - No internal coordination costs
+   - Baseline for comparison
+
+2. **Collective Agents**: Genuine unified agents composed of multiple components
+   - **Not** cooperating individuals, but truly collective entities
+   - Internal coordination costs for component communication
+   - Shared energy budget across components
+   - Can sacrifice individual components for collective benefit
+
+3. **Future Agent Types**: Framework designed to support temporal agents, meta-agents, etc.
+
+#### Neural Learning Approach
+
+- **Discovery-Focused**: Networks learn what strategies work rather than implementing pre-defined behaviors
+- **Minimal Conceptual Bias**: Avoid hardcoding cooperation, competition, or other human concepts
+- **Emergence Detection**: Systematic identification of novel behaviors and moral concepts
+- **Evolutionary Training**: Multi-generational learning with fitness-based selection
+
+### Setting Up Agency Experiments
+
+#### Prerequisites
+- Python 3.11+ with MeltingPot environment installed
+- TensorFlow 2.x for neural networks
+- matplotlib, seaborn for visualization (automatically installed)
+
+#### Quick Start
+
+1. **Navigate to experiments directory**:
+   ```bash
+   cd agency_experiments/experiments/collective_agency
+   ```
+
+2. **Run a quick test**:
+   ```bash
+   python run_experiment.py --config quick_test --scenario mixed_competition --generations 5
+   ```
+
+3. **Run full experiment**:
+   ```bash
+   python run_experiment.py --scenario collective_evolution --generations 100
+   ```
+
+#### Available Scenarios (Collective Agency Example)
+
+- **`individual_only`**: Only individual agents (baseline)
+- **`collective_only`**: Only collective agents  
+- **`mixed_competition`**: 60% individual, 40% collective agents
+- **`collective_evolution`**: Long-term collective agent evolution
+
+#### Configuration Options
+
+```bash
+# Custom population and generations
+python run_experiment.py --population_size 24 --generations 75
+
+# Specific random seed for reproducibility
+python run_experiment.py --seed 12345
+
+# Different configuration preset
+python run_experiment.py --config full_experiment
+```
+
+### Creating New Experiments
+
+1. **Copy template structure**:
+   ```bash
+   cp -r templates/experiment_template experiments/my_new_experiment
+   cd experiments/my_new_experiment
+   ```
+
+2. **Customize key files**:
+   - `config.py`: Define experimental parameters and scenarios
+   - `agents.py`: Implement agent types using shared base classes
+   - `environment.py`: Set up environment wrapper
+   - `training.py`: Define fitness functions and training procedures
+   - `analysis.py`: Create analysis and visualization tools
+   - `README.md`: Document research questions and methodology
+
+3. **Test the experiment**:
+   ```bash
+   python run_experiment.py --config quick_test
+   ```
+
+### Understanding Experiment Results
+
+#### Directory Structure After Running
+```
+results/scenario_name_YYYYMMDD_HHMMSS/
+├── config.json              # Complete experimental configuration
+├── args.json                # Command-line arguments used
+├── raw_data/                # Raw training data
+│   └── training_results.json
+├── analysis/                # Processed analysis
+│   └── training_analysis.json
+├── figures/                 # Generated visualizations
+│   ├── fitness_evolution.png
+│   ├── agent_type_comparison.png
+│   └── collective_metrics.png
+└── models/                  # Saved trained agents
+```
+
+#### Key Metrics to Examine
+
+1. **Performance Comparison**: How different agent types perform over generations
+2. **Emergence Events**: Sudden fitness improvements indicating new strategies
+3. **Collective Behavior Metrics**:
+   - Coordination efficiency
+   - Component diversity
+   - Collective coherence
+4. **Novel Strategy Detection**: Behaviors that significantly outperform baseline
+
+### Research Guidelines
+
+#### Best Practices
+
+1. **Systematic Approach**: Use consistent experimental structure across studies
+2. **Reproducibility**: Set random seeds and save complete configurations
+3. **Documentation**: Clearly document research questions and findings
+4. **Baseline Comparisons**: Always include individual agents as baseline
+5. **Multiple Scenarios**: Test agent types across different conditions
+
+#### What to Look For
+
+1. **Novel Collective Strategies**: Behaviors impossible for individual agents
+2. **Emergent Moral Concepts**: New approaches to resource allocation, sacrifice, cooperation
+3. **Component Specialization**: How collective agent components differentiate
+4. **Environmental Impact**: How collective agents change the social dynamics
+5. **Evolutionary Patterns**: How strategies evolve over generations
+
+### Common Issues and Solutions
+
+#### MeltingPot Compatibility
+- The framework handles MeltingPot observation format automatically
+- Complex observations (images, mixed types) are processed into neural network inputs
+- String values in observations are filtered or converted appropriately
+
+#### Performance Optimization
+- Use GPU acceleration for neural networks (automatically detected)
+- Adjust population size and episode length for faster iteration
+- Use `quick_test` configuration for rapid prototyping
+
+#### Debugging Experiments
+- Check `error_log.json` if experiments fail
+- Use smaller populations and fewer generations for testing
+- Verify agent implementations with unit tests in `tests/` directory
+
+### Advanced Usage
+
+#### Custom Agent Types
+Inherit from `BaseAgent` and implement required methods:
+```python
+from shared.agents import BaseAgent, AgentType
+
+class MyCustomAgent(BaseAgent):
+    def _get_agent_type(self) -> AgentType:
+        return AgentType.CUSTOM
+    
+    def observe(self, raw_observation) -> np.ndarray:
+        # Process observations
+        pass
+    
+    def decide(self, observation, context=None) -> Dict[str, Any]:
+        # Make decisions
+        pass
+```
+
+#### Custom Analysis
+Extend `ExperimentAnalyzer` for domain-specific analysis:
+```python
+from shared.analysis import ExperimentAnalyzer
+
+class MyAnalyzer(ExperimentAnalyzer):
+    def analyze_training_results(self, results):
+        analysis = super().analyze_training_results(results)
+        # Add custom analysis
+        analysis['my_custom_metric'] = self._calculate_custom_metric(results)
+        return analysis
+```
+
+This framework provides a solid foundation for systematic research into novel forms of agency and the emergence of new moral and social concepts beyond human limitations.
