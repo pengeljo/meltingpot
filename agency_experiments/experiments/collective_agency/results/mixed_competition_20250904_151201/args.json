@@ -1,8 +1,0 @@
-{
-  "config": "quick_test",
-  "scenario": "mixed_competition",
-  "generations": 2,
-  "population_size": null,
-  "output_dir": "results",
-  "seed": 42
-}

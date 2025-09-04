@@ -31,6 +31,24 @@ from training import create_fitness_function
 from analysis import create_analyzer
 
 
+def make_serializable(obj):
+    """Convert numpy types and other non-serializable objects to JSON-serializable types."""
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, (np.integer, np.floating)):
+        return obj.item()
+    elif isinstance(obj, np.bool_):
+        return bool(obj)
+    elif isinstance(obj, dict):
+        return {key: make_serializable(value) for key, value in obj.items()}
+    elif isinstance(obj, (list, tuple)):
+        return [make_serializable(item) for item in obj]
+    elif isinstance(obj, (str, int, float, bool)) or obj is None:
+        return obj
+    else:
+        return str(obj)
+
+
 def set_random_seeds(seed: int):
     """Set random seeds for reproducibility."""
     random.seed(seed)
@@ -60,7 +78,7 @@ def run_scenario(config: CollectiveAgencyConfig, scenario_name: str,
     # Get scenario-specific configuration
     scenario_config = config.get_scenario_config(scenario_name)
     print(f"Scenario focus: {scenario_config['focus']}")
-    print(f"Generations: {scenario_config.get('generations', config.evolution.generations)}")
+    print(f"Generations: {config.evolution.generations}")
     print(f"Individual ratio: {scenario_config.get('individual_ratio', 0.5):.2f}")
     print(f"Collective ratio: {scenario_config.get('collective_ratio', 0.5):.2f}")
     
@@ -76,21 +94,18 @@ def run_scenario(config: CollectiveAgencyConfig, scenario_name: str,
     print("Starting evolutionary training...")
     results = training_function(
         agent_factory=agent_factory,
-        generations=scenario_config.get('generations', config.evolution.generations)
+        generations=config.evolution.generations
     )
     
     # Save results
     results_file = f"{experiment_dir}/raw_data/training_results.json"
     with open(results_file, 'w') as f:
         # Convert non-serializable objects for JSON
-        serializable_results = {}
-        for key, value in results.items():
-            if key not in ['best_agent_ever', 'best_agents_history', 'final_population']:
-                if isinstance(value, (list, dict, str, int, float, bool)) or value is None:
-                    serializable_results[key] = value
-                else:
-                    serializable_results[key] = str(value)
-        
+        filtered_results = {
+            key: value for key, value in results.items()
+            if key not in ['best_agent_ever', 'best_agents_history', 'final_population']
+        }
+        serializable_results = make_serializable(filtered_results)
         json.dump(serializable_results, f, indent=2)
     
     print(f"Results saved to {results_file}")
@@ -111,13 +126,7 @@ def analyze_results(results: Dict[str, Any], experiment_dir: str,
     # Save analysis (handle non-serializable objects)
     analysis_file = f"{experiment_dir}/analysis/training_analysis.json"
     with open(analysis_file, 'w') as f:
-        serializable_analysis = {}
-        for key, value in analysis.items():
-            if isinstance(value, (list, dict, str, int, float, bool)) or value is None:
-                serializable_analysis[key] = value
-            else:
-                serializable_analysis[key] = str(value)
-        
+        serializable_analysis = make_serializable(analysis)
         json.dump(serializable_analysis, f, indent=2)
     
     # Generate figures
@@ -174,6 +183,7 @@ def main():
     
     # Override config with command line arguments
     if args.generations:
+        print(f"Overriding generations from {config.evolution.generations} to {args.generations}")
         config.evolution.generations = args.generations
     if args.population_size:
         config.evolution.population_size = args.population_size

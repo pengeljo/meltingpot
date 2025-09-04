@@ -28,5 +28,8 @@ __pycache__/
 /examples/results/
 /meltingpot/assets/
 
+# Agency experiment results
+/agency_experiments/experiments/*/results/
+
 # CUDNN Local repo
 *.deb

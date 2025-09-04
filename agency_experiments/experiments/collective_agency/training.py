@@ -227,7 +227,8 @@ class CollectiveAgencyEvolution(EvolutionaryTrainer):
         """Train agents using evolutionary algorithm."""
         if generations is None:
             generations = self.config.generations
-        
+            
+        print(f"Debug: received generations={generations}, config.generations={self.config.generations}")
         print(f"Starting evolutionary training for {generations} generations")
         
         # Initialize population
@@ -392,7 +393,7 @@ def create_fitness_function(env_wrapper: MultiAgentEnvironmentWrapper,
     """Create fitness function for evolutionary training."""
     
     fitness_evaluator = CollectiveAgencyFitness(env_wrapper, config, scenario_config)
-    evolution_config = scenario_config.get('evolution_config', config.evolution)
-    trainer = CollectiveAgencyEvolution(evolution_config, fitness_evaluator)
+    # Always use the main config evolution settings (which may have been overridden by command line)
+    trainer = CollectiveAgencyEvolution(config.evolution, fitness_evaluator)
     
     return trainer.train

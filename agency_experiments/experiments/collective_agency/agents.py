@@ -228,12 +228,12 @@ class EmergentCollectiveAgent(CollectiveAgent):
         # Determine resource allocation
         allocation = self.coordination_network(
             [tf.convert_to_tensor([state], dtype=tf.float32) for state in current_states],
-            tf.convert_to_tensor([self.current_energy / self.capabilities.energy_budget], dtype=tf.float32)
+            tf.convert_to_tensor([self.energy / self.capabilities.energy_budget], dtype=tf.float32)
         )
         
         # Apply coordination costs
         coordination_cost = np.sum(allocation.numpy()) * self.capabilities.coordination_cost
-        self._apply_coordination_costs(coordination_cost)
+        self.energy -= coordination_cost
         
         # Make collective decision
         decision_logits = self.decision_network(
